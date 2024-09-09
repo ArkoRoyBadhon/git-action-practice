@@ -1,0 +1,47 @@
+name: Deploy workflow
+on: push
+jobs:
+  lintCheck:
+    name: lint checking
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Install Dependecies
+        run: npm install
+      - name: run lint
+        run: npm run lint
+  testCheck:
+    needs: lintCheck
+    name: test checking
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Install Dependecies
+        run: npm install
+      - name: run test
+        run: npm run test
+  buildCheck:
+    needs: [testCheck, lintCheck]
+    name: build checking
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Install Dependecies
+        run: npm install
+      - name: run build
+        run: npm run build
